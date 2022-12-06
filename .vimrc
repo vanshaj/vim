@@ -10,11 +10,18 @@ let g:jedi#usages_command = "<leader><leader>u"
 let g:jedi#goto_assignments_commad = "<leader><leader>g"
 let g:jedi#goto_command = "<leader><leader>d"
 
+let g:vim_isort_config_overrides = {'include_trailing_comma': 1, 'multi_line_output': 3}
+let g:vim_isort_python_version = 'python3'
+
 inoremap jj <Esc>
 set rnu
 set nu
 set nocompatible              " required
 set t_Co=256
+set modifiable
+set cursorline
+set noswapfile
+hi cursorline
 
 
 "split navigations
@@ -34,7 +41,6 @@ nnoremap <leader><leader>i  <C-i>
 nnoremap <leader><leader>p :NERDTreeToggle<CR>
 nnoremap <leader><leader>t :FloatermNew --height=0.3<CR>
 
-nnoremap D  "_dd
 nnoremap S "_S
 nnoremap x "_x
 nnoremap c "_c
@@ -52,6 +58,8 @@ onoremap P :normal! P
 
 xnoremap <expr> p 'pgv"'.v:register.'y`>'
 xnoremap <expr> P 'Pgv"'.v:register.'y`>'
+
+nnoremap <C-i> :!isort %<CR>
 
 filetype off                  " required
 " set the runtime path to include Vundle and initialize
@@ -76,6 +84,9 @@ Plugin 'junegunn/fzf.vim'
 Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
 Plugin 'davidhalter/jedi-vim'
+Plugin 'mgedmin/python-imports.vim'
+Plugin 'fisadev/vim-isort'
+Plugin 'dense-analysis/ale'
 " ...
 
 " All of your Plugins must be added before the following line
