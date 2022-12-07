@@ -13,7 +13,12 @@ let g:jedi#goto_command = "<leader><leader>d"
 let g:vim_isort_config_overrides = {'include_trailing_comma': 1, 'multi_line_output': 3}
 let g:vim_isort_python_version = 'python3'
 
+let g:pythonPaths = [
+    \ expand('~/automation_py/framework'),
+    \ ]
+
 inoremap jj <Esc>
+tnoremap jj <C-\><C-n>
 set rnu
 set nu
 set nocompatible              " required
@@ -21,25 +26,28 @@ set t_Co=256
 set modifiable
 set cursorline
 set noswapfile
+set splitright
+set splitbelow
 hi cursorline
 
 
 "split navigations
-nnoremap <C-j> <C-W><C-J>
-nnoremap <C-k> <C-W><C-K>
-nnoremap <C-l> <C-W><C-L>
-nnoremap <C-h> <C-W><C-H>
+nnoremap <leader>J <C-W><C-J>
+nnoremap <leader>K <C-W><C-K>
+nnoremap <leader>L <C-W><C-L>
+nnoremap <leader>H <C-W><C-H>
 
 nnoremap <leader><leader>sa :vsp<CR><C-w>T:tabp<CR><C-o>:tabn<CR>
 nnoremap <leader><leader>st :vsp<CR><C-w>T:tabp<CR><C-t>:tabn<CR>
 nnoremap <leader><leader>l :tabn<CR>
 nnoremap <leader><leader>h :tabp<CR>
 nnoremap <leader>tc :tabc<CR>
-nnoremap <leader><leader>o  <C-o>
-nnoremap <leader><leader>i  <C-i>
+nnoremap <leader><leader>o  <C-o>zz
+nnoremap <leader><leader>i  <C-i>zz
 
 nnoremap <leader><leader>p :NERDTreeToggle<CR>
 nnoremap <leader><leader>t :FloatermNew --height=0.3<CR>
+nnoremap <leader><leader>T :tab term ++close<CR>
 
 nnoremap S "_S
 nnoremap x "_x
@@ -59,7 +67,12 @@ onoremap P :normal! P
 xnoremap <expr> p 'pgv"'.v:register.'y`>'
 xnoremap <expr> P 'Pgv"'.v:register.'y`>'
 
-nnoremap <C-i> :!isort %<CR>
+nnoremap <silent> <C-i> mt:!isort %<CR>`tzz:delm t<CR>
+nnoremap <silent> <C-c> mt:%s/automation_py\.//g<CR>`tzz:delm t<CR>
+command Sim 70vsp %
+map <F5> :ImportName<CR><C-o>zz
+nnoremap <silent> <C-k> :ALEPrevious<CR>zz
+nnoremap <silent> <C-j> :ALENext<CR>zz
 
 filetype off                  " required
 " set the runtime path to include Vundle and initialize
