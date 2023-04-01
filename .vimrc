@@ -7,15 +7,26 @@ let g:jedi#use_splits_not_buffers = "right"
 let g:jedi#popup_on_dot = 0
 let g:jedi#completions_command = "<C-l>"
 let g:jedi#usages_command = "<leader><leader>u"
-let g:jedi#goto_assignments_commad = "<leader><leader>g"
+let g:jedi#goto_assignments_command = "<leader><leader>g"
 let g:jedi#goto_command = "<leader><leader>d"
+let g:jedi#environment_path = "/usr/bin/python3.9"
 
 let g:vim_isort_config_overrides = {'include_trailing_comma': 1, 'multi_line_output': 3}
 let g:vim_isort_python_version = 'python3'
 
 let g:pythonPaths = [
-    \ expand('~/automation_py/framework'),
+    \ expand('~/Projects/automation_py'),
     \ ]
+
+let g:ale_set_highlights = 0
+
+" let g:go_def_mode='gopls'
+" let g:go_info_mode='gopls'
+
+let g:VimuxOrientation="h"
+let g:VimuxHeight="40"
+
+colorscheme atom-dark-256
 
 inoremap jj <Esc>
 tnoremap jj <C-\><C-n>
@@ -30,6 +41,9 @@ set splitright
 set splitbelow
 hi cursorline
 
+"suggestion
+inoremap <c-d> <c-x><c-d>
+inoremap <c-n> <c-x><c-n>
 
 "split navigations
 nnoremap <leader>J <C-W><C-J>
@@ -49,6 +63,15 @@ nnoremap <leader><leader>p :NERDTreeToggle<CR>
 nnoremap <leader><leader>t :FloatermNew --height=0.3<CR>
 nnoremap <leader><leader>T :tab term ++close<CR>
 
+map <leader>dd :call VimuxRunCommand("b " . bufname("%") . ":" . line("."))<CR>
+map <leader>ds :call VimuxRunCommand("s ")<CR>
+map <leader>dc :call VimuxRunCommand("c ")<CR>
+map <Leader>rn :call VimuxRunCommand("pt -m mytest " . bufname("%"))<CR>
+map <Leader>rb :call VimuxRunCommand("pt -m mytest " . bufname("%"), 0)<CR>
+map <leader>rt mg:let line=matchstr(getline('.'),'def \w\+')<CR>:let fn=split(line)[1]<CR>:let classline=getline(search("^class"))<CR>:let class=split(matchstr(classline, 'class \w\+'))[1]<CR>:call VimuxRunCommand("pt " . bufname("%") . "::" . class . "::" . fn)<CR>`g
+
+:let line2=matchstr(getline('.'),'def \w\+')
+
 nnoremap S "_S
 nnoremap x "_x
 nnoremap c "_c
@@ -67,12 +90,21 @@ onoremap P :normal! P
 xnoremap <expr> p 'pgv"'.v:register.'y`>'
 xnoremap <expr> P 'Pgv"'.v:register.'y`>'
 
-nnoremap <silent> <C-i> mt:!isort %<CR>`tzz:delm t<CR>
-nnoremap <silent> <C-c> mt:%s/automation_py\.//g<CR>`tzz:delm t<CR>
-command Sim 70vsp %
-map <F5> :ImportName<CR><C-o>zz
+nnoremap <silent> <C-i> :ImportName<CR><c-o>
+nnoremap <silent> <C-s> mt:!isort %<CR>`tzz:delm t<CR>
+
 nnoremap <silent> <C-k> :ALEPrevious<CR>zz
 nnoremap <silent> <C-j> :ALENext<CR>zz
+
+" abbreviation
+:iab bp breakpoint()
+:cab tn tabnew
+:cab gf GetTests 
+
+" command
+command Sim 70vsp %
+command GetTests call VimuxRunCommand("cat " . bufname("%") . "| grep 'def test_' | awk -F '(' '{print $1}' | awk '{print $2}'")<CR>
+
 
 filetype off                  " required
 " set the runtime path to include Vundle and initialize
@@ -100,6 +132,9 @@ Plugin 'davidhalter/jedi-vim'
 Plugin 'mgedmin/python-imports.vim'
 Plugin 'fisadev/vim-isort'
 Plugin 'dense-analysis/ale'
+Plugin 'fatih/vim-go'
+Plugin 'preservim/vimux'
+Plugin 'vim-test/vim-test'
 " ...
 
 " All of your Plugins must be added before the following line
